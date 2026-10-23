@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rizkyrohan Saputra | Portofolio Web Developer &amp; Bot WhatsApp</title>
+  <meta name="description" content="Portofolio Rizkyrohan Saputra, developer 17 tahun dari Jawa Barat. Membuat Web API dan Bot WhatsApp dengan JavaScript dan Node.js." />
+  <meta name="keywords" content="Rizkyrohan Saputra, portofolio developer, web developer Indonesia, bot WhatsApp, web API, Node.js, JavaScript, Jawa Barat" />
+  <meta name="author" content="Rizkyrohan Saputra" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#05070b" />
+  <link rel="canonical" href="https://DOMAIN-KAMU.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Rizkyrohan Saputra" />
+  <meta property="og:title" content="Rizkyrohan Saputra | Portofolio" />
+  <meta property="og:description" content="Web API dan Bot WhatsApp dengan JavaScript dan Node.js." />
+  <meta property="og:url" content="https://DOMAIN-KAMU.com/" />
+  <meta property="og:locale" content="id_ID" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Rizkyrohan Saputra",
+    "url": "https://DOMAIN-KAMU.com/",
+    "jobTitle": "Web Developer",
+    "knowsAbout": ["JavaScript", "Node.js", "HTML", "CSS", "TypeScript", "WhatsApp Bot"],
+    "address": { "@type": "PostalAddress", "addressRegion": "Jawa Barat", "addressCountry": "ID" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Lewati ke konten</a>
+
+  <header class="topbar">
+    <div class="brand-wrap">
+      <a class="brand" href="#top" aria-label="Kembali ke atas">RS</a>
+      <span class="brand-name" id="brand-name"></span>
+    </div>
+    <nav aria-label="Navigasi utama">
+      <a href="#skill">Skill</a>
+      <a href="#editor">Editor</a>
+      <a href="#project">Project</a>
+      <a href="#kontak">Kontak</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-text">
+        <div class="avatar" id="avatar" aria-hidden="true">
+          <span class="avatar-scan"></span>
+          <span class="avatar-initials" id="initials"></span>
+        </div>
+        <h1 id="name">Rizkyrohan Saputra</h1>
+        <p class="tagline" id="tagline">Web API dan Bot WhatsApp dengan JavaScript dan Node.js.</p>
+        <ul class="chips" id="chips"></ul>
+      </div>
+      <aside class="readout" aria-label="Ringkasan profil">
+        <dl id="readout"></dl>
+      </aside>
+    </section>
+
+    <section class="block" id="skill" aria-labelledby="skill-title">
+      <h2 id="skill-title">Skill</h2>
+      <div class="meters" id="skills"></div>
+    </section>
+
+    <section class="block" id="editor" aria-labelledby="editor-title">
+      <h2 id="editor-title">Editor video</h2>
+      <div class="meters" id="editors"></div>
+    </section>
+
+    <section class="block" id="project" aria-labelledby="project-title">
+      <h2 id="project-title">Project</h2>
+      <div class="cards" id="projects"></div>
+    </section>
+
+    <section class="block" id="kontak" aria-labelledby="kontak-title">
+      <h2 id="kontak-title">Kontak &amp; komunitas</h2>
+      <div class="links">
+        <div>
+          <h3>Kontak</h3>
+          <ul class="link-list" id="contacts"></ul>
+        </div>
+        <div>
+          <h3>Sosial media</h3>
+          <ul class="link-list" id="socials"></ul>
+        </div>
+        <div>
+          <h3>Komunitas</h3>
+          <ul class="link-list" id="communities"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year"></span> Rizkyrohan Saputra</p>
+  </footer>
+
+  <script src="settings.js"></script>
+  <script>
+    (function () {
+      const S = window.SETTINGS;
+      if (!S) { document.querySelector("main").insertAdjacentHTML("afterbegin", "<p style=\"padding:24px;color:#ffb547\">Data belum termuat. Pastikan settings.js ada di folder public.</p>"); return; }
+
+      const $ = (id) => document.getElementById(id);
+      const el = (tag, attrs = {}, kids = []) => {
+        const node = document.createElement(tag);
+        for (const [k, v] of Object.entries(attrs)) {
+          if (k === "text") node.textContent = v;
+          else if (k === "class") node.className = v;
+          else node.setAttribute(k, v);
+        }
+        kids.forEach((c) => node.append(c));
+        return node;
+      };
+
+      // Profil
+      document.title = S.site.title;
+      $("name").textContent = S.profile.name;
+      $("brand-name").textContent = S.profile.name;
+      $("initials").textContent = S.profile.initials || "";
+      if (S.profile.photo) {
+        const img = el("img", { src: S.profile.photo, alt: S.profile.name, width: "112", height: "112" });
+        $("avatar").prepend(img);
+        $("avatar").classList.add("has-photo");
+      }
+      $("tagline").textContent = S.profile.tagline;
+      $("year").textContent = new Date().getFullYear();
+
+      S.profile.chips.forEach((c) => $("chips").append(el("li", { text: c })));
+
+      [
+        ["Umur", S.profile.age + " tahun"],
+        ["Lokasi", S.profile.location],
+        ["Fokus", S.profile.focus],
+        ["Status", S.profile.status],
+      ].forEach(([k, v]) => {
+        $("readout").append(el("dt", { text: k }), el("dd", { text: v }));
+      });
+
+      // Meter skill dan editor
+      const meter = (item) => {
+        const pct = Math.max(0, Math.min(100, item.level));
+        const fill = el("div", { class: "meter-fill" });
+        fill.dataset.level = String(pct);
+        return el("div", { class: "meter" }, [
+          el("div", { class: "meter-head" }, [
+            el("span", { text: item.name }),
+            el("span", { class: "meter-val", text: pct + "%" }),
+          ]),
+          el(
+            "div",
+            {
+              class: "meter-track",
+              role: "meter",
+              "aria-label": item.name,
+              "aria-valuemin": "0",
+              "aria-valuemax": "100",
+              "aria-valuenow": String(pct),
+            },
+            [fill]
+          ),
+        ]);
+      };
+      S.skills.forEach((s) => $("skills").append(meter(s)));
+      S.editors.forEach((s) => $("editors").append(meter(s)));
+
+      // Animasi isi meter saat terlihat (dilewati jika pengguna minta gerak dikurangi)
+      const fills = document.querySelectorAll(".meter-fill");
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const show = (f) => (f.style.width = f.dataset.level + "%");
+      if (reduce || !("IntersectionObserver" in window)) {
+        fills.forEach(show);
+      } else {
+        const io = new IntersectionObserver(
+          (entries) =>
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                show(e.target);
+                io.unobserve(e.target);
+              }
+            }),
+          { threshold: 0.3 }
+        );
+        fills.forEach((f) => io.observe(f));
+      }
+
+      // Project
+      S.projects.forEach((p) => {
+        const tags = el("ul", { class: "tags" }, p.tags.map((t) => el("li", { text: t })));
+        $("projects").append(
+          el("article", { class: "card" }, [
+            el("div", { class: "card-head" }, [
+              el("h3", { text: p.name }),
+              el("span", { class: "pill", text: p.status }),
+            ]),
+            el("p", { text: p.description }),
+            tags,
+            el("a", { href: p.url, target: "_blank", rel: "noopener", text: "View" }),
+          ])
+        );
+      });
+
+      // Kontak, sosial, komunitas
+      const linkItems = (list, target) =>
+        list.forEach((i) =>
+          $(target).append(
+            el("li", {}, [
+              el("span", { class: "link-label", text: i.label }),
+              el("a", { href: i.url, target: "_blank", rel: "noopener", text: i.value }),
+            ])
+          )
+        );
+      linkItems(S.contacts, "contacts");
+      linkItems(S.socials, "socials");
+      linkItems(S.communities, "communities");
+    })();
+  </script>
+</body>
+</html>
